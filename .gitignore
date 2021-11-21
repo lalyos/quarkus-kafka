@@ -1,0 +1,13 @@
+.mvn
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+.classpath
+.settings/
+.DS_Store
+
+# Visual Studio Code
+.vscode
+.factorypath
