@@ -1,0 +1,43 @@
+version: '3.0'
+services:
+  kafka:
+    image: vectorized/redpanda
+    command:
+    - redpanda
+    - start
+    - --kafka-addr
+    - INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+    - --advertise-kafka-addr
+    - INTERNAL://127.0.0.1:9092,EXTERNAL://kafka:9093
+    ports:
+    - 9092:9092
+    #- 9093:9093
+  quarkus:
+    image: lalyos/quarkus-kafka
+    ports:
+      - 8080:8080
+    environment:
+      - BOOTSTRAP_SERVER=kafka:9093
+      - CITIES=new-york,paris,amsterdam,tokiyo,vladivostok
+  weather:
+    image: bitnami/kafka
+    command:
+    - kafka-console-consumer.sh
+    - --bootstrap-server=kafka:9093
+    - --topic=weather
+    - --value-deserializer=org.apache.kafka.common.serialization.IntegerDeserializer
+    - --property=print.key=true
+  foods:
+    image: bitnami/kafka
+    command:
+    - kafka-console-consumer.sh
+    - --bootstrap-server=kafka:9093
+    - --topic=foods
+  animals:
+    image: bitnami/kafka
+    command:
+    - kafka-console-consumer.sh
+    - --bootstrap-server=kafka:9093
+    - --topic=animals
+    - --value-deserializer=org.apache.kafka.common.serialization.IntegerDeserializer
+    - --property=print.key=true
